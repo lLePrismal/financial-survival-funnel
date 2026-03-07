@@ -15,7 +15,7 @@ export default function TwentyFourHourReset() {
         <div className="max-w-2xl mx-auto">
           {/* Red Callout */}
           <div className="bg-red-500 text-white rounded-2xl p-6 md:p-8 shadow-2xl mb-12">
-            <h1 className="text-2xl md:text-4xl font-bold leading-tight">
+            <h1 className="text-2xl md:text-4xl font-bold leading-tight" style={{textAlign: 'center'}}>
               WHAT IF YOU NEED RESULTS IN 24 HOURS?
             </h1>
           </div>
@@ -91,10 +91,10 @@ export default function TwentyFourHourReset() {
             {/* Add-On */}
             <div className="border-t border-gray-600 pt-6">
               <p className="text-gray-300 text-lg mb-3">Add-On:</p>
-              <p className="text-cyan-400 font-bold text-xl mb-2">
+              <p className="text-cyan-400 font-bold text-xl mb-2" style={{textAlign: 'center'}}>
                 🎵 Audio Version – ₱99
               </p>
-              <p className="text-gray-400 text-sm">
+              <p className="text-gray-400 text-sm" style={{textAlign: 'center'}}>
                 (For night shift, tired VAs, busy breadwinners)
               </p>
             </div>
