@@ -15,7 +15,7 @@ export default function MiniCrisis() {
         <div className="max-w-2xl mx-auto">
           {/* Red Callout */}
           <div className="bg-red-500 text-white rounded-2xl p-6 md:p-8 shadow-2xl mb-12">
-            <h1 className="text-2xl md:text-4xl font-bold leading-tight">
+            <h1 className="text-2xl md:text-4xl font-bold leading-tight" style={{textAlign: 'center'}}>
               STOP BLEEDING MONEY.<br />
               BUILD 30-DAY SURVIVAL CASH.
             </h1>
