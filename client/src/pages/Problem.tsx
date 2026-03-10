@@ -23,7 +23,7 @@ export default function Problem() {
         <div className="relative z-10 max-w-2xl mx-auto">
           {/* Red Callout */}
           <div className="bg-red-500 text-white rounded-2xl p-6 md:p-8 shadow-2xl mb-12">
-            <h1 className="text-2xl md:text-4xl font-bold leading-tight">
+            <h1 className="text-2xl md:text-4xl font-bold leading-tight" style={{textAlign: 'center'}}>
               THIS IS NOT ABOUT BEING LAZY.
             </h1>
           </div>
