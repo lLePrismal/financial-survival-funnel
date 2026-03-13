@@ -1,12 +1,34 @@
+import { useState } from "react";
 import { useLocation } from "wouter";
+import EmailCaptureForm from "@/components/EmailCaptureForm";
+import { Button } from "@/components/ui/button";
+import { Download, CheckCircle2 } from "lucide-react";
 
 /**
  * Free Offer Page - Financial Survival Funnel
- * Design: Lead magnet presentation, value stacking
+ * Design: Lead magnet presentation with email gate
  * Purpose: Capture email and deliver free 5-page guide
  */
 export default function FreeOffer() {
   const [, navigate] = useLocation();
+  const [emailCaptured, setEmailCaptured] = useState(false);
+  const [downloadToken, setDownloadToken] = useState("");
+
+  const handleEmailCaptured = (email: string, token: string) => {
+    setEmailCaptured(true);
+    setDownloadToken(token);
+  };
+
+  const handleDownload = () => {
+    // In a real scenario, this would generate a PDF or send to email
+    // For now, we'll show a success message
+    alert(`Download link would be sent to your email!\nToken: ${downloadToken}`);
+    
+    // Optionally navigate to next page after download
+    setTimeout(() => {
+      navigate("/mini-crisis");
+    }, 1500);
+  };
 
   return (
     <div className="min-h-screen bg-gray-950 text-white">
@@ -64,18 +86,60 @@ export default function FreeOffer() {
             </p>
           </div>
 
+          {/* Email Capture or Download Section */}
+          {!emailCaptured ? (
+            <div className="bg-gray-800 rounded-lg p-6 md:p-8 border-2 border-cyan-400 space-y-6">
+              <div className="space-y-2">
+                <h3 className="text-white text-xl font-bold">Get Instant Access</h3>
+                <p className="text-gray-300">
+                  Enter your email below to receive the complete 5-page guide immediately.
+                </p>
+              </div>
+              <EmailCaptureForm 
+                onSuccess={handleEmailCaptured}
+                source="free-offer"
+              />
+            </div>
+          ) : (
+            <div className="bg-gray-800 rounded-lg p-6 md:p-8 border-2 border-green-500 space-y-6">
+              <div className="flex items-center gap-3 text-green-400">
+                <CheckCircle2 className="w-8 h-8" />
+                <h3 className="text-xl font-bold">Email Confirmed!</h3>
+              </div>
+              
+              <div className="space-y-3">
+                <p className="text-gray-300">
+                  Your download link has been sent to your email. Click the button below to access your guide now.
+                </p>
+                <Button
+                  onClick={handleDownload}
+                  className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-8 rounded-lg text-lg transition-all duration-300 transform hover:scale-105"
+                >
+                  <Download className="w-5 h-5 mr-2" />
+                  Download Guide Now
+                </Button>
+              </div>
+
+              <p className="text-gray-400 text-sm text-center">
+                Or continue to explore our premium courses →
+              </p>
+            </div>
+          )}
+
           {/* CTA Section */}
-          <div className="space-y-4 pt-8">
-            <p className="text-cyan-400 font-bold text-lg md:text-xl text-center">
-              👉 SEND ME THE FULL GUIDE
-            </p>
-            <button
-              onClick={() => navigate("/mini-crisis")}
-              className="w-full bg-yellow-400 hover:bg-yellow-300 text-black font-bold py-4 px-8 rounded-lg text-lg md:text-xl transition-all duration-300 transform hover:scale-105 shadow-lg pulse-glow"
-            >
-              Start
-            </button>
-          </div>
+          {emailCaptured && (
+            <div className="space-y-4 pt-8">
+              <p className="text-cyan-400 font-bold text-lg md:text-xl text-center">
+                👉 READY FOR MORE?
+              </p>
+              <button
+                onClick={() => navigate("/mini-crisis")}
+                className="w-full bg-yellow-400 hover:bg-yellow-300 text-black font-bold py-4 px-8 rounded-lg text-lg md:text-xl transition-all duration-300 transform hover:scale-105 shadow-lg pulse-glow"
+              >
+                Explore Premium Courses
+              </button>
+            </div>
+          )}
 
           {/* Navigation */}
           <div className="flex justify-between items-center pt-8 border-t border-gray-700">
@@ -85,12 +149,14 @@ export default function FreeOffer() {
             >
               ← Back
             </button>
-            <button
-              onClick={() => navigate("/mini-crisis")}
-              className="text-gray-400 hover:text-gray-200 text-sm underline transition-colors"
-            >
-              Next →
-            </button>
+            {emailCaptured && (
+              <button
+                onClick={() => navigate("/mini-crisis")}
+                className="text-gray-400 hover:text-gray-200 text-sm underline transition-colors"
+              >
+                Next →
+              </button>
+            )}
           </div>
         </div>
       </div>

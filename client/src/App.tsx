@@ -11,8 +11,8 @@ import MiniCrisis from "./pages/MiniCrisis";
 import TwentyFourHourReset from "./pages/TwentyFourHourReset";
 import RebuildMindset from "./pages/RebuildMindset";
 import FinalSelection from "./pages/FinalSelection";
-
 function Router() {
+  // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
       <Route path={"/"} component={Landing} />
