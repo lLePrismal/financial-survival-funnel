@@ -52,3 +52,11 @@
 - [ ] Add analytics tracking for conversion optimization
 - [ ] Create email automation sequences
 - [ ] Add SMS notifications for high-value leads
+
+## Email Automation
+- [x] Create PDF guide file with survival formula content
+- [x] Upload PDF to S3 storage
+- [x] Implement email sending service using Manus API
+- [x] Create email template for guide delivery
+- [x] Update email capture to trigger PDF delivery
+- [x] Test email delivery flow end-to-end (18 tests passing)

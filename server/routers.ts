@@ -3,6 +3,7 @@ import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
 import { subscribeEmail } from "./db";
+import { sendPdfGuide } from "./email";
 import { z } from "zod";
 
 export const appRouter = router({
@@ -29,6 +30,13 @@ export const appRouter = router({
       .mutation(async ({ input }) => {
         try {
           const { downloadToken } = await subscribeEmail(input.email, input.source);
+          
+          // Send PDF guide email asynchronously (don't wait for it)
+          const pdfUrl = "https://d2xsxph8kpxj0f.cloudfront.net/310519663178774865/7wTJyHXEYJUZwAQXqkbzVh/financial-survival-guide_5fe9cbf8.pdf";
+          sendPdfGuide(input.email, downloadToken, pdfUrl).catch((error) => {
+            console.error("[Email] Failed to send PDF guide:", error);
+          });
+          
           return {
             success: true,
             downloadToken,
