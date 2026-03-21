@@ -1,4 +1,5 @@
 import { useLocation } from "wouter";
+import { StripeCheckoutButton } from "@/components/StripeCheckoutButton";
 
 /**
  * 24-Hour Reset Page - Financial Survival Funnel
@@ -105,15 +106,13 @@ export default function TwentyFourHourReset() {
             <p className="text-yellow-400 font-bold text-lg md:text-xl text-center">
               👉 UPGRADE TO 24-HOUR RESET
             </p>
-            <div className="flex items-center justify-center gap-4 md:gap-8">
-              <span className="text-orange-500 font-bold text-4xl">&gt;&gt;&gt;</span>
-              <button
-                onClick={() => navigate("/rebuild-mindset")}
+            <div className="flex items-center justify-center">
+              <StripeCheckoutButton
+                productId="twenty_four_hour_reset"
+                productName="24-Hour Reset"
+                productPrice={19900}
                 className="bg-yellow-400 hover:bg-yellow-300 text-black font-bold py-4 px-8 rounded-lg text-lg md:text-xl transition-all duration-300 transform hover:scale-110 shadow-lg pulse-glow"
-              >
-                Start
-              </button>
-              <span className="text-orange-500 font-bold text-4xl">&lt;&lt;&lt;</span>
+              />
             </div>
           </div>
 

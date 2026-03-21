@@ -11,6 +11,8 @@ import MiniCrisis from "./pages/MiniCrisis";
 import TwentyFourHourReset from "./pages/TwentyFourHourReset";
 import RebuildMindset from "./pages/RebuildMindset";
 import FinalSelection from "./pages/FinalSelection";
+import PaymentSuccess from "./pages/PaymentSuccess";
+import PaymentCancelled from "./pages/PaymentCancelled";
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
@@ -22,6 +24,8 @@ function Router() {
       <Route path={"/24-hour-reset"} component={TwentyFourHourReset} />
       <Route path={"/rebuild-mindset"} component={RebuildMindset} />
       <Route path={"/final-selection"} component={FinalSelection} />
+      <Route path={"/payment-success"} component={PaymentSuccess} />
+      <Route path={"/payment-cancelled"} component={PaymentCancelled} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

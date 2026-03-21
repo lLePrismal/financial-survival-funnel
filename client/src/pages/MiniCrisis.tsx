@@ -1,4 +1,5 @@
 import { useLocation } from "wouter";
+import { StripeCheckoutButton } from "@/components/StripeCheckoutButton";
 
 /**
  * Mini Crisis Blueprint Page - Financial Survival Funnel
@@ -74,15 +75,13 @@ export default function MiniCrisis() {
             <p className="text-cyan-400 font-bold text-lg md:text-xl text-center">
               👉 GET INSTANT ACCESS – ₱149
             </p>
-            <div className="flex items-center justify-center gap-4 md:gap-8">
-              <span className="text-orange-500 font-bold text-4xl">&gt;&gt;&gt;</span>
-              <button
-                onClick={() => navigate("/24-hour-reset")}
+            <div className="flex items-center justify-center">
+              <StripeCheckoutButton
+                productId="mini_crisis_blueprint"
+                productName="Mini Crisis Blueprint"
+                productPrice={14900}
                 className="bg-yellow-400 hover:bg-yellow-300 text-black font-bold py-4 px-8 rounded-lg text-lg md:text-xl transition-all duration-300 transform hover:scale-110 shadow-lg pulse-glow"
-              >
-                Start
-              </button>
-              <span className="text-orange-500 font-bold text-4xl">&lt;&lt;&lt;</span>
+              />
             </div>
           </div>
 
@@ -93,7 +92,7 @@ export default function MiniCrisis() {
               onClick={() => navigate("/24-hour-reset")}
               className="w-full bg-cyan-400 hover:bg-cyan-300 text-black font-bold py-3 px-6 rounded-lg transition-all duration-300"
             >
-              Upgrade to 24-Hour Reset (₱199)
+              View 24-Hour Reset (₱199)
             </button>
           </div>
 

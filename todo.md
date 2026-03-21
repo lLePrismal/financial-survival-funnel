@@ -60,3 +60,17 @@
 - [x] Create email template for guide delivery
 - [x] Update email capture to trigger PDF delivery
 - [x] Test email delivery flow end-to-end (18 tests passing)
+
+## Stripe Payment Integration
+- [x] Add Stripe feature to project
+- [x] Create products database schema (stripeCustomers, stripeOrders tables)
+- [x] Build Stripe checkout component (StripeCheckoutButton)
+- [x] Update product pages with payment buttons (all 3 products)
+- [x] Create payment success page (/payment-success)
+- [x] Create payment cancelled page (/payment-cancelled)
+- [x] Implement Stripe service with checkout session creation
+- [x] Add payment router to tRPC (payment.createCheckout)
+- [x] Create webhook handler for payment events
+- [x] Add Stripe environment variables to env.ts
+- [x] Create Stripe service tests (12 tests)
+- [x] TypeScript compilation (0 errors)

@@ -4,6 +4,7 @@ import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
 import { subscribeEmail } from "./db";
 import { sendPdfGuide } from "./email";
+import { createCheckoutSession, saveOrder } from "./stripe-service";
 import { z } from "zod";
 
 export const appRouter = router({
@@ -47,6 +48,50 @@ export const appRouter = router({
           return {
             success: false,
             error: errorMessage,
+          };
+        }
+      }),
+  }),
+
+  payment: router({
+    createCheckout: publicProcedure
+      .input(
+        z.object({
+          productId: z.string(),
+          productName: z.string(),
+          productPrice: z.number().positive(),
+        })
+      )
+      .mutation(async ({ input, ctx }) => {
+        try {
+          const email = ctx.user?.email || "guest@example.com";
+          const userName = ctx.user?.name;
+          const userId = ctx.user?.id;
+          const origin = ctx.req.headers.origin as string | null | undefined;
+
+          // Create Stripe checkout session
+          const { sessionId, checkoutUrl } = await createCheckoutSession(
+            input.productName,
+            input.productPrice,
+            email,
+            userId,
+            userName,
+            origin
+          );
+
+          // Save order to database
+          await saveOrder(email, sessionId, input.productName, input.productPrice, userId);
+
+          return {
+            success: true,
+            checkoutUrl,
+            sessionId,
+          };
+        } catch (error) {
+          console.error("[Payment] Failed to create checkout:", error);
+          return {
+            success: false,
+            error: error instanceof Error ? error.message : "Failed to create checkout",
           };
         }
       }),

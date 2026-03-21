@@ -42,3 +42,38 @@ export const emailSubscribers = mysqlTable("emailSubscribers", {
 
 export type EmailSubscriber = typeof emailSubscribers.$inferSelect;
 export type InsertEmailSubscriber = typeof emailSubscribers.$inferInsert;
+/**
+ * Stripe customers table for payment processing.
+ * Stores Stripe customer IDs linked to users.
+ */
+export const stripeCustomers = mysqlTable("stripeCustomers", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull().unique(),
+  stripeCustomerId: varchar("stripeCustomerId", { length: 255 }).notNull().unique(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type StripeCustomer = typeof stripeCustomers.$inferSelect;
+export type InsertStripeCustomer = typeof stripeCustomers.$inferInsert;
+
+/**
+ * Stripe orders table for tracking purchases.
+ * Stores minimal data - Stripe is the source of truth.
+ */
+export const stripeOrders = mysqlTable("stripeOrders", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId"),
+  email: varchar("email", { length: 320 }).notNull(),
+  stripeCheckoutSessionId: varchar("stripeCheckoutSessionId", { length: 255 }).notNull().unique(),
+  stripePaymentIntentId: varchar("stripePaymentIntentId", { length: 255 }),
+  productName: varchar("productName", { length: 255 }).notNull(),
+  productPrice: int("productPrice").notNull(), // Amount in cents
+  currency: varchar("currency", { length: 3 }).default("USD").notNull(),
+  status: mysqlEnum("status", ["pending", "completed", "failed", "cancelled"]).default("pending").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  completedAt: timestamp("completedAt"),
+});
+
+export type StripeOrder = typeof stripeOrders.$inferSelect;
+export type InsertStripeOrder = typeof stripeOrders.$inferInsert;
