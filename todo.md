@@ -74,3 +74,14 @@
 - [x] Add Stripe environment variables to env.ts
 - [x] Create Stripe service tests (12 tests)
 - [x] TypeScript compilation (0 errors)
+
+
+## Countdown Timer for Urgency
+- [x] Create reusable CountdownTimer component with localStorage persistence
+- [x] Add timer to Mini Crisis product page (₱149)
+- [x] Add timer to 24-Hour Reset product page (₱199)
+- [x] Add timer to Rebuild Mindset product page (₱499)
+- [x] Implement warning state when less than 2 hours remaining
+- [x] Add expiration state and messaging
+- [x] Create countdown timer tests (12 tests)
+- [x] Test countdown functionality across all pages

@@ -1,5 +1,6 @@
 import { useLocation } from "wouter";
 import { StripeCheckoutButton } from "@/components/StripeCheckoutButton";
+import { CountdownTimer } from "@/components/CountdownTimer";
 
 /**
  * Mini Crisis Blueprint Page - Financial Survival Funnel
@@ -27,6 +28,9 @@ export default function MiniCrisis() {
       {/* Main Content */}
       <div className="bg-gray-950 py-12 md:py-16 px-4">
         <div className="max-w-2xl mx-auto space-y-12">
+          {/* Countdown Timer */}
+          <CountdownTimer durationHours={24} title="OFFER EXPIRES IN" />
+
           {/* What You Get */}
           <div className="bg-gray-800 rounded-lg p-6 md:p-8 border border-gray-700 space-y-4">
             <h2 className="text-white text-2xl font-bold">What You Get:</h2>

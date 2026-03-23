@@ -1,5 +1,6 @@
 import { useLocation } from "wouter";
 import { StripeCheckoutButton } from "@/components/StripeCheckoutButton";
+import { CountdownTimer } from "@/components/CountdownTimer";
 
 /**
  * 24-Hour Reset Page - Financial Survival Funnel
@@ -26,6 +27,9 @@ export default function TwentyFourHourReset() {
       {/* Main Content */}
       <div className="bg-gray-950 py-12 md:py-16 px-4">
         <div className="max-w-2xl mx-auto space-y-12">
+          {/* Countdown Timer */}
+          <CountdownTimer durationHours={24} title="OFFER EXPIRES IN" />
+
           {/* Product Title */}
           <div className="text-center space-y-3">
             <p className="text-yellow-400 font-bold text-lg md:text-xl">
