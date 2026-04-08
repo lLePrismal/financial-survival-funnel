@@ -85,3 +85,27 @@
 - [x] Add expiration state and messaging
 - [x] Create countdown timer tests (12 tests)
 - [x] Test countdown functionality across all pages
+
+
+## Admin Dashboard
+- [x] Create admin dashboard page with metrics (/admin route)
+- [x] Display subscriber count and email list
+- [x] Show revenue by product breakdown
+- [x] Display conversion rates
+- [x] Add email list export functionality (CSV download)
+- [x] Admin-only access control
+
+## Exit-Intent Popup
+- [x] Create exit-intent popup component
+- [x] Implement discount offer logic (STAY20 code)
+- [x] Add popup trigger on mouse leave
+- [x] Style popup with urgency messaging
+- [x] Session-based display (shows once per session)
+- [x] 20% discount offer with 24-hour validity
+
+## Testimonials Section
+- [x] Add testimonials to Final Selection page
+- [x] Create customer success stories (3 testimonials)
+- [x] Display before/after results (career/income transitions)
+- [x] Add 5-star ratings
+- [x] Show monetary impact (saved/earned amounts)

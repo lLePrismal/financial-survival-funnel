@@ -72,6 +72,61 @@ export default function FinalSelection() {
             </div>
           </div>
 
+          {/* Testimonials Section */}
+          <div className="space-y-8">
+            <div className="text-center">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">Success Stories</h2>
+              <p className="text-gray-400">Real people, real results</p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-6">
+              {/* Testimonial 1 */}
+              <div className="bg-gray-800 rounded-lg p-6 border border-gray-700 space-y-4">
+                <div className="flex items-center gap-2">
+                  <span className="text-yellow-400 text-lg">★★★★★</span>
+                </div>
+                <p className="text-gray-300 italic">
+                  "I went from panic to plan in 24 hours. This system saved my business."
+                </p>
+                <div className="pt-4 border-t border-gray-700">
+                  <p className="font-bold text-white">Maria Santos</p>
+                  <p className="text-sm text-gray-400">Call Center Agent → Business Owner</p>
+                  <p className="text-xs text-cyan-400 mt-2">Saved ₱50,000 in first month</p>
+                </div>
+              </div>
+
+              {/* Testimonial 2 */}
+              <div className="bg-gray-800 rounded-lg p-6 border-2 border-cyan-400 space-y-4 transform scale-105">
+                <div className="flex items-center gap-2">
+                  <span className="text-yellow-400 text-lg">★★★★★</span>
+                </div>
+                <p className="text-gray-300 italic">
+                  "The mindset shift alone was worth it. Now I'm teaching others."
+                </p>
+                <div className="pt-4 border-t border-gray-700">
+                  <p className="font-bold text-white">Juan Dela Cruz</p>
+                  <p className="text-sm text-gray-400">OFW → Financial Coach</p>
+                  <p className="text-xs text-cyan-400 mt-2">Now earning 3x more</p>
+                </div>
+              </div>
+
+              {/* Testimonial 3 */}
+              <div className="bg-gray-800 rounded-lg p-6 border border-gray-700 space-y-4">
+                <div className="flex items-center gap-2">
+                  <span className="text-yellow-400 text-lg">★★★★★</span>
+                </div>
+                <p className="text-gray-300 italic">
+                  "No more sleepless nights. I finally have a real plan for my family."
+                </p>
+                <div className="pt-4 border-t border-gray-700">
+                  <p className="font-bold text-white">Ana Rodriguez</p>
+                  <p className="text-sm text-gray-400">Single Mom → Stable Income</p>
+                  <p className="text-xs text-cyan-400 mt-2">Built 6-month emergency fund</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Bottom Close */}
           <div className="bg-gray-800 rounded-lg p-8 md:p-12 border border-gray-700 space-y-6 text-center">
             <p className="text-yellow-400 font-bold text-lg md:text-xl">

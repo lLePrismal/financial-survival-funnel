@@ -1,11 +1,12 @@
 import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
-import { publicProcedure, router } from "./_core/trpc";
-import { subscribeEmail } from "./db";
+import { publicProcedure, router, protectedProcedure } from "./_core/trpc";
+import { subscribeEmail, getSubscriberCount, getTotalRevenue, getRevenueByProduct, getAllSubscribers } from "./db";
 import { sendPdfGuide } from "./email";
 import { createCheckoutSession, saveOrder } from "./stripe-service";
 import { z } from "zod";
+import { TRPCError } from "@trpc/server";
 
 export const appRouter = router({
   system: systemRouter,
@@ -51,6 +52,70 @@ export const appRouter = router({
           };
         }
       }),
+  }),
+
+  admin: router({
+    getDashboardMetrics: protectedProcedure.query(async ({ ctx }) => {
+      // Check if user is admin
+      if (ctx.user?.role !== "admin") {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Only admins can access dashboard metrics",
+        });
+      }
+
+      try {
+        const subscriberCount = await getSubscriberCount();
+        const totalRevenue = await getTotalRevenue();
+        const revenueByProduct = await getRevenueByProduct();
+
+        // Calculate conversion rate (orders / subscribers)
+        const totalOrders = Object.values(revenueByProduct).reduce(
+          (sum, product) => sum + product.count,
+          0
+        );
+        const conversionRate =
+          subscriberCount > 0 ? (totalOrders / subscriberCount) * 100 : 0;
+
+        return {
+          subscriberCount,
+          totalRevenue,
+          totalOrders,
+          conversionRate,
+          revenueByProduct,
+        };
+      } catch (error) {
+        console.error("[Admin] Failed to get dashboard metrics:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to fetch metrics",
+        });
+      }
+    }),
+
+    exportSubscribers: protectedProcedure.mutation(async ({ ctx }) => {
+      // Check if user is admin
+      if (ctx.user?.role !== "admin") {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Only admins can export subscribers",
+        });
+      }
+
+      try {
+        const subscribers = await getAllSubscribers();
+        return {
+          success: true,
+          subscribers,
+        };
+      } catch (error) {
+        console.error("[Admin] Failed to export subscribers:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to export subscribers",
+        });
+      }
+    }),
   }),
 
   payment: router({

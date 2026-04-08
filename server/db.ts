@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, emailSubscribers, InsertEmailSubscriber } from "../drizzle/schema";
+import { InsertUser, users, emailSubscribers, InsertEmailSubscriber, stripeOrders } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -189,4 +189,85 @@ function generateDownloadToken(): string {
   return Math.random().toString(36).substring(2, 15) +
     Math.random().toString(36).substring(2, 15) +
     Date.now().toString(36);
+}
+
+/**
+ * Get all email subscribers
+ */
+export async function getAllSubscribers() {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  try {
+    return await db.select().from(emailSubscribers);
+  } catch (error) {
+    console.error("[Database] Failed to get subscribers:", error);
+    throw error;
+  }
+}
+
+/**
+ * Get subscriber count
+ */
+export async function getSubscriberCount(): Promise<number> {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  try {
+    const result = await db.select().from(emailSubscribers);
+    return result.length;
+  } catch (error) {
+    console.error("[Database] Failed to get subscriber count:", error);
+    return 0;
+  }
+}
+
+/**
+ * Get total revenue from completed orders
+ */
+export async function getTotalRevenue(): Promise<number> {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  try {
+    const orders = await db.select().from(stripeOrders).where(eq(stripeOrders.status, "completed"));
+    return orders.reduce((sum, order) => sum + order.productPrice, 0);
+  } catch (error) {
+    console.error("[Database] Failed to get total revenue:", error);
+    return 0;
+  }
+}
+
+/**
+ * Get revenue by product
+ */
+export async function getRevenueByProduct() {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  try {
+    const orders = await db.select().from(stripeOrders).where(eq(stripeOrders.status, "completed"));
+    const revenueMap: Record<string, { count: number; total: number }> = {};
+
+    orders.forEach((order) => {
+      if (!revenueMap[order.productName]) {
+        revenueMap[order.productName] = { count: 0, total: 0 };
+      }
+      revenueMap[order.productName].count += 1;
+      revenueMap[order.productName].total += order.productPrice;
+    });
+
+    return revenueMap;
+  } catch (error) {
+    console.error("[Database] Failed to get revenue by product:", error);
+    return {};
+  }
 }
