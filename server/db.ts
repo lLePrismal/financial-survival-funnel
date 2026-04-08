@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, emailSubscribers, InsertEmailSubscriber, stripeOrders } from "../drizzle/schema";
+import { InsertUser, users, emailSubscribers, InsertEmailSubscriber, stripeOrders, affiliates, smsSubscribers } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -269,5 +269,98 @@ export async function getRevenueByProduct() {
   } catch (error) {
     console.error("[Database] Failed to get revenue by product:", error);
     return {};
+  }
+}
+
+
+/**
+ * Create affiliate account
+ */
+export async function createAffiliate(userId: number, commissionRate: number = 20) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  try {
+    const affiliateCode = `AFF${userId}${Date.now().toString(36).toUpperCase()}`;
+    const referralLink = `${process.env.VITE_FRONTEND_FORGE_API_URL || "https://finfunnel-7wtjyhxe.manus.space"}?ref=${affiliateCode}`;
+
+    const result = await db.insert(affiliates).values({
+      userId,
+      affiliateCode,
+      referralLink,
+      commissionRate,
+    });
+
+    return { affiliateCode, referralLink };
+  } catch (error) {
+    console.error("[Database] Failed to create affiliate:", error);
+    throw error;
+  }
+}
+
+/**
+ * Get affiliate by code
+ */
+export async function getAffiliateByCode(code: string) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  try {
+    const result = await db.select().from(affiliates).where(eq(affiliates.affiliateCode, code)).limit(1);
+    return result.length > 0 ? result[0] : null;
+  } catch (error) {
+    console.error("[Database] Failed to get affiliate:", error);
+    return null;
+  }
+}
+
+/**
+ * Add SMS subscriber
+ */
+export async function addSmsSubscriber(email: string, phoneNumber: string, countryCode: string = "PH") {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  try {
+    await db.insert(smsSubscribers).values({
+      email,
+      phoneNumber,
+      countryCode,
+      status: "subscribed",
+    }).onDuplicateKeyUpdate({
+      set: {
+        phoneNumber,
+        countryCode,
+        status: "subscribed",
+      },
+    });
+
+    return { success: true };
+  } catch (error) {
+    console.error("[Database] Failed to add SMS subscriber:", error);
+    throw error;
+  }
+}
+
+/**
+ * Get SMS subscribers for reminder
+ */
+export async function getSmsSubscribersForReminder() {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  try {
+    return await db.select().from(smsSubscribers).where(eq(smsSubscribers.status, "subscribed"));
+  } catch (error) {
+    console.error("[Database] Failed to get SMS subscribers:", error);
+    return [];
   }
 }

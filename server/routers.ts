@@ -2,7 +2,7 @@ import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router, protectedProcedure } from "./_core/trpc";
-import { subscribeEmail, getSubscriberCount, getTotalRevenue, getRevenueByProduct, getAllSubscribers } from "./db";
+import { subscribeEmail, getSubscriberCount, getTotalRevenue, getRevenueByProduct, getAllSubscribers, createAffiliate, getAffiliateByCode } from "./db";
 import { sendPdfGuide } from "./email";
 import { createCheckoutSession, saveOrder } from "./stripe-service";
 import { z } from "zod";
@@ -160,6 +160,53 @@ export const appRouter = router({
           };
         }
       }),
+  }),
+
+  affiliate: router({
+    joinProgram: protectedProcedure.mutation(async ({ ctx }) => {
+      if (!ctx.user) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "Must be logged in to join affiliate program",
+        });
+      }
+
+      try {
+        const { affiliateCode, referralLink } = await createAffiliate(ctx.user.id, 20);
+        return {
+          success: true,
+          affiliateCode,
+          referralLink,
+        };
+      } catch (error) {
+        console.error("[Affiliate] Failed to join program:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to join affiliate program",
+        });
+      }
+    }),
+
+    getAffiliateData: protectedProcedure.query(async ({ ctx }) => {
+      if (!ctx.user) {
+        return null;
+      }
+
+      try {
+        // For now, return mock data since we need to implement affiliate query
+        // In production, fetch from database
+        return {
+          affiliateCode: `AFF${ctx.user.id}`,
+          referralLink: `https://finfunnel-7wtjyhxe.manus.space?ref=AFF${ctx.user.id}`,
+          commissionRate: 20,
+          totalCommission: 0,
+          totalReferrals: 0,
+        };
+      } catch (error) {
+        console.error("[Affiliate] Failed to get affiliate data:", error);
+        return null;
+      }
+    }),
   }),
 });
 

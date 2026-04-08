@@ -5,6 +5,7 @@ import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { ExitIntentPopup } from "./components/ExitIntentPopup";
+import { LiveChatWidget } from "./components/LiveChatWidget";
 import Landing from "./pages/Landing";
 import Problem from "./pages/Problem";
 import FreeOffer from "./pages/FreeOffer";
@@ -15,6 +16,7 @@ import FinalSelection from "./pages/FinalSelection";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentCancelled from "./pages/PaymentCancelled";
 import AdminDashboard from "./pages/AdminDashboard";
+import AffiliateProgram from "./pages/AffiliateProgram";
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
@@ -29,6 +31,7 @@ function Router() {
       <Route path={"/payment-success"} component={PaymentSuccess} />
       <Route path={"/payment-cancelled"} component={PaymentCancelled} />
       <Route path={"/admin"} component={AdminDashboard} />
+      <Route path={"/affiliate"} component={AffiliateProgram} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
@@ -43,6 +46,7 @@ function App() {
         <TooltipProvider>
           <Toaster />
           <ExitIntentPopup />
+          <LiveChatWidget />
           <Router />
         </TooltipProvider>
       </ThemeProvider>

@@ -20,6 +20,7 @@ export default function EmailCaptureForm({
   source = "free-offer",
 }: EmailCaptureFormProps) {
   const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
@@ -58,6 +59,7 @@ export default function EmailCaptureForm({
         body: JSON.stringify({
           email: email.toLowerCase().trim(),
           source,
+          phoneNumber: phoneNumber || undefined,
         }),
         credentials: "include",
       });
@@ -126,6 +128,22 @@ export default function EmailCaptureForm({
             setEmail(e.target.value);
             setError(""); // Clear error when user starts typing
           }}
+          disabled={loading}
+          className="bg-gray-800 border-gray-700 text-white placeholder:text-gray-500 focus:border-yellow-400"
+        />
+      </div>
+
+      {/* Phone Number Input (Optional) */}
+      <div className="space-y-2">
+        <label htmlFor="phone" className="text-gray-300 text-sm font-medium">
+          Phone Number (Optional - for SMS reminders)
+        </label>
+        <Input
+          id="phone"
+          type="tel"
+          placeholder="+63 9XX XXX XXXX"
+          value={phoneNumber}
+          onChange={(e) => setPhoneNumber(e.target.value)}
           disabled={loading}
           className="bg-gray-800 border-gray-700 text-white placeholder:text-gray-500 focus:border-yellow-400"
         />

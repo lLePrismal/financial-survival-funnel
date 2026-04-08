@@ -109,3 +109,28 @@
 - [x] Display before/after results (career/income transitions)
 - [x] Add 5-star ratings
 - [x] Show monetary impact (saved/earned amounts)
+
+
+## Live Chat Widget
+- [x] Integrate live chat widget (Drift)
+- [x] Add LiveChatWidget component to App.tsx
+- [x] Configure Drift script initialization
+- [x] Set up page tracking attributes
+- [x] Ready for Drift account configuration
+
+## Affiliate Program
+- [x] Create affiliates database table with commission tracking
+- [x] Create referrals database table for tracking sales
+- [x] Build affiliate dashboard page (/affiliate route)
+- [x] Implement referral link generation
+- [x] Add affiliate router with joinProgram and getAffiliateData endpoints
+- [x] Create affiliate signup form
+- [x] Display earnings, referrals, and commission rate
+
+## SMS Reminders
+- [x] Integrate Twilio SMS service module
+- [x] Create SMS subscribers database table
+- [x] Add phone number capture to email form
+- [x] Implement sendOfferExpirationReminder function
+- [x] Add SMS database helper functions
+- [x] Ready for Twilio account configuration

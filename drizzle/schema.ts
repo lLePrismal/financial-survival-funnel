@@ -77,3 +77,58 @@ export const stripeOrders = mysqlTable("stripeOrders", {
 
 export type StripeOrder = typeof stripeOrders.$inferSelect;
 export type InsertStripeOrder = typeof stripeOrders.$inferInsert;
+
+/**
+ * Affiliates table for affiliate program.
+ * Tracks affiliate partners and their commission rates.
+ */
+export const affiliates = mysqlTable("affiliates", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull().unique(),
+  affiliateCode: varchar("affiliateCode", { length: 64 }).notNull().unique(),
+  referralLink: varchar("referralLink", { length: 512 }).notNull(),
+  commissionRate: int("commissionRate").default(20).notNull(), // Percentage (e.g., 20 = 20%)
+  totalCommission: int("totalCommission").default(0).notNull(), // Amount in cents
+  totalReferrals: int("totalReferrals").default(0).notNull(),
+  status: mysqlEnum("status", ["active", "inactive", "suspended"]).default("active").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Affiliate = typeof affiliates.$inferSelect;
+export type InsertAffiliate = typeof affiliates.$inferInsert;
+
+/**
+ * Referrals table for tracking affiliate referrals.
+ * Links orders to affiliate referrals for commission calculation.
+ */
+export const referrals = mysqlTable("referrals", {
+  id: int("id").autoincrement().primaryKey(),
+  affiliateId: int("affiliateId").notNull(),
+  orderId: int("orderId").notNull(),
+  commissionAmount: int("commissionAmount").notNull(), // Amount in cents
+  status: mysqlEnum("status", ["pending", "completed", "cancelled"]).default("pending").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  completedAt: timestamp("completedAt"),
+});
+
+export type Referral = typeof referrals.$inferSelect;
+export type InsertReferral = typeof referrals.$inferInsert;
+
+/**
+ * SMS subscribers table for SMS reminders.
+ * Stores phone numbers for SMS reminder system.
+ */
+export const smsSubscribers = mysqlTable("smsSubscribers", {
+  id: int("id").autoincrement().primaryKey(),
+  email: varchar("email", { length: 320 }).notNull().unique(),
+  phoneNumber: varchar("phoneNumber", { length: 20 }).notNull(),
+  countryCode: varchar("countryCode", { length: 3 }).default("PH").notNull(),
+  status: mysqlEnum("status", ["subscribed", "unsubscribed", "bounced"]).default("subscribed").notNull(),
+  lastReminderSent: timestamp("lastReminderSent"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type SmsSubscriber = typeof smsSubscribers.$inferSelect;
+export type InsertSmsSubscriber = typeof smsSubscribers.$inferInsert;
